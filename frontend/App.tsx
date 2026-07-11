@@ -46,18 +46,57 @@ function LoginScreen({ navigation }: any) {
   );
 }
 
-function HomeScreen() {
+function HomeScreen({ navigation }: any) {
   return (
     <View style={styles.container}>
-      <Text>Home Screen</Text>
+      <Text style={styles.title}>Welcome back!</Text>
+      <Text style={styles.subtitle}>Ready to find your next class?</Text>
+
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => navigation.navigate('ClassSearch')}
+      >
+        <Text style={styles.buttonText}>Find My Class</Text>
+      </TouchableOpacity>
     </View>
   );
 }
+function ClassSearchScreen({ navigation }: any) {
+  const [classCode, setClassCode] = React.useState('');
+  const [result, setResult] = React.useState<null | { building: string; floor: number; room: string }>(null);
 
-function ClassSearchScreen() {
+  const handleSearch = () => {
+    // Fake hardcoded response for now — real API comes in Iteration 3
+    setResult({
+      building: 'Science Block',
+      floor: 2,
+      room: '204',
+    });
+  };
+
   return (
     <View style={styles.container}>
-      <Text>Class Search Screen</Text>
+      <Text style={styles.title}>Find Your Class</Text>
+
+      <TextInput
+        style={styles.input}
+        placeholder="Enter class code (e.g. CS101)"
+        value={classCode}
+        onChangeText={setClassCode}
+        autoCapitalize="characters"
+      />
+
+      <TouchableOpacity style={styles.button} onPress={handleSearch}>
+        <Text style={styles.buttonText}>Search</Text>
+      </TouchableOpacity>
+
+      {result && (
+        <View style={{ marginTop: 24 }}>
+          <Text style={styles.subtitle}>
+            {classCode || 'Your class'} is in {result.building}, Floor {result.floor}, Room {result.room}
+          </Text>
+        </View>
+      )}
     </View>
   );
 }
@@ -93,6 +132,12 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     padding: 12,
     marginBottom: 16,
+  },
+ subtitle: {
+    fontSize: 16,
+    color: '#555',
+    marginBottom: 32,
+    textAlign: 'center',
   },
   button: {
     backgroundColor: '#2563eb',
