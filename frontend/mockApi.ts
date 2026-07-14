@@ -17,3 +17,12 @@ const mockRooms: Record<string, RoomData> = {
 
 
 };
+
+
+export function fetchRoomData(code: string): Promise<RoomData | null> {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(mockRooms[code.toUpperCase()] ?? null);
+    }, 500); // fake network delay
+  });
+}
