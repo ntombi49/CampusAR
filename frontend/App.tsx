@@ -55,7 +55,12 @@ function HomeScreen({ navigation }: any) {
 
 function ClassSearchScreen({ navigation }: any) {
   const [classCode, setClassCode] = React.useState('');
-  const [result, setResult] = React.useState<null | { building: string; floor: number; room: string }>(null);
+  const [result, setResult] = React.useState<null | { 
+    building: string;
+     floor: number; 
+     room: string;
+     ar_coords:{x: number; y:number; z: number};
+    }>(null);
 
    const [loading, setLoading] = React.useState(false);
 
@@ -65,7 +70,7 @@ function ClassSearchScreen({ navigation }: any) {
     setLoading(false);
 
     if(data)
-      {setResult({ building: data.building, floor: data.floor, room: data.room});
+      {setResult({ building: data.building, floor: data.floor, room: data.room ,ar_coords: data.ar_coords});
     } else {
       setResult(null);
       alert('Room not found');
@@ -77,7 +82,7 @@ function ClassSearchScreen({ navigation }: any) {
       <Text style={styles.title}>Find Your Class</Text>
       <TextInput
         style={styles.input}
-        placeholder="Enter class code (e.g. CS101)"
+        placeholder="Enter class code (e.g. G204)"
         value={classCode}
         onChangeText={setClassCode}
         autoCapitalize="characters"

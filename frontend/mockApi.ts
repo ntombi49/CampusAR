@@ -7,8 +7,8 @@ ar_coords: {x:number; y:number; z: number };
 };
 
 const mockRooms: Record<string, RoomData> = {
-   CS101: {
-    code: 'CS101',
+   G204: {
+    code: 'G204',
     building: 'IT Block',
     floor: 2,
     room: 'G204',
