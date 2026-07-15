@@ -3,6 +3,9 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native'
 import { fetchRoomData } from './mockApi';
+import { Linking } from 'react-native';
+
+
 
 type RootStackParamList = {
   Login: undefined;
@@ -75,6 +78,17 @@ function ClassSearchScreen({ navigation }: any) {
       setResult(null);
       alert('Room not found');
     }
+    }
+    const openDirections =()=> {
+      if (!result) return;
+
+      //for testing
+      const lat= -25.7545
+      const lng =28.2314
+      const label= result.building;
+
+      const url = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}&travelmode=walking`;
+    Linking.openURL(url);
   };
 
   return (
@@ -96,6 +110,11 @@ function ClassSearchScreen({ navigation }: any) {
             {classCode || 'Your class'} is in {result.building}, Floor {result.floor}, Room {result.room}
           </Text>
         </View>
+      )}
+      {result && (
+        <TouchableOpacity style={[styles.button, { marginTop: 12 }]} onPress={openDirections}>
+          <Text style={styles.buttonText}>Go to Building</Text>
+        </TouchableOpacity>
       )}
     </View>
   );
