@@ -58,11 +58,13 @@ function HomeScreen({ navigation }: any) {
 
 function ClassSearchScreen({ navigation }: any) {
   const [classCode, setClassCode] = React.useState('');
+  const [arrivedAtBuilding, setArrivedAtBuilding] = React.useState(false);
   const [result, setResult] = React.useState<null | { 
     building: string;
      floor: number; 
      room: string;
      ar_coords:{x: number; y:number; z: number};
+     building_coords: {lat:number, lng:number};
     }>(null);
 
    const [loading, setLoading] = React.useState(false);
@@ -72,23 +74,29 @@ function ClassSearchScreen({ navigation }: any) {
     const data = await fetchRoomData(classCode);
     setLoading(false);
 
-    if(data)
-      {setResult({ building: data.building, floor: data.floor, room: data.room ,ar_coords: data.ar_coords});
+    if (data) {
+      setResult({
+        building: data.building,
+        floor: data.floor,
+        room: data.room,
+        ar_coords: data.ar_coords,
+        building_coords: data.building_coords,
+      });
     } else {
       setResult(null);
       alert('Room not found');
     }
-    }
-    const openDirections =()=> {
-      if (!result) return;
+  };
 
-      //for testing
-      const lat= -25.7545
-      const lng =28.2314
-      const label= result.building;
+  const openDirections = () => {
+    if (!result) return;
 
-      const url = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}&travelmode=walking`;
+    const lat = result.building_coords.lat;
+    const lng = result.building_coords.lng;
+
+    const url = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}&travelmode=walking`;
     Linking.openURL(url);
+    setArrivedAtBuilding(true);
   };
 
   return (
@@ -115,6 +123,11 @@ function ClassSearchScreen({ navigation }: any) {
         <TouchableOpacity style={[styles.button, { marginTop: 12 }]} onPress={openDirections}>
           <Text style={styles.buttonText}>Go to Building</Text>
         </TouchableOpacity>
+      )}
+      {arrivedAtBuilding && result && (
+        <Text style={[styles.subtitle, { marginTop: 16 }]}>
+          Arriving? Open your AR view to find the room.
+        </Text>
       )}
     </View>
   );
