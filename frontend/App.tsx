@@ -4,6 +4,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native'
 import { fetchRoomData } from './mockApi';
 import { Linking } from 'react-native';
+import { ViroARSceneNavigator } from '@reactvision/react-viro';
+import { ViroARScene, ViroBox, ViroAmbientLight } from '@reactvision/react-viro';
 
 
 
@@ -131,6 +133,21 @@ function ClassSearchScreen({ navigation }: any) {
       )}
     </View>
   );
+
+const ARScene = () => {
+  return (
+    <ViroARScene>
+      <ViroAmbientLight color="#ffffff" />
+      <ViroBox 
+      position={[0, 0, -1]}
+       scale={[0.2, 0.2, 0.2]}
+        />
+    </ViroARScene>
+  );
+}
+
+
+
 }
 
 export default function App() {
